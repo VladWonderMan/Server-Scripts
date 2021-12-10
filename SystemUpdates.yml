@@ -1,0 +1,58 @@
+---
+  - hosts: MyServer
+    become: yes
+    tasks:
+      - name: Install Unattended Upgrades
+        apt:
+         name: unattended-upgrades
+         state: latest
+      
+      - name: Update Package List Every 3 days
+        lineinfile:
+          path: /etc/apt/apt.conf.d/20auto-upgrades
+          regex: '^APT::Periodic::Update-Package-Lists'
+          line: 'APT::Periodic::Update-Package-Lists "3";'
+          backrefs: yes
+
+      - name: Update Packages Every 7 days
+        lineinfile:
+          path: /etc/apt/apt.conf.d/20auto-upgrades
+          regex: '^APT::Periodic::Unattended-Upgrade'
+          line: 'APT::Periodic::Unattended-Upgrade "7";'
+          backrefs: yes
+
+      - name: Enable Regular Package Update
+        lineinfile:
+          path: /etc/apt/apt.conf.d/50unattended-upgrades
+          regex: '^//\s+"origin=Debian,codename\S+distro_codename\S-updates";'
+          line: '       "origin=Debian,codename=${distro_codename}-updates";'
+          backrefs: yes
+
+      - name: Enable Auto Reboot
+        lineinfile:
+          path: /etc/apt/apt.conf.d/50unattended-upgrades
+          regex: '^//Unattended-Upgrade::Automatic-Reboot\s+'
+          line: 'Unattended-Upgrade::Automatic-Reboot "true";'
+          backrefs: yes
+      
+      - name: Set Time for Auto Reboot
+        lineinfile:
+          path: /etc/apt/apt.conf.d/50unattended-upgrades
+          regex: '^//Unattended-Upgrade::Automatic-Reboot-Time\s+'
+          line: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";'
+          backrefs: yes
+
+      - name: Update and Upgrade apt Packages
+        apt:
+         upgrade: dist
+         update_cache: yes
+         cache_valid_time: 86400 #One Day
+
+      - name: Clean Unwanted Older Stuff
+        apt:
+          autoremove: yes
+          purge: yes
+
+      - name: Check if a reboot is needed
+        register: reboot_required_file
+        stat: path=/var/run/reboot-required get_md5=no
