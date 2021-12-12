@@ -12,9 +12,9 @@ network_threshold='10'
 print_help () {
 
 	hv=(
-		"\n-==Resource monitoring script.==-\n"
+	   "\n-==Resource monitoring script.==-\n"
 
-		"-p,  --proc         - manipulating /proc directory"
+	    "-p,  --proc         - manipulating /proc directory"
 	    "-c,  --cpu          - managing cpu"
 	    "-m,  --memory       - managing memory"
 	    "-d,  --disks        - managing disks"
@@ -23,16 +23,16 @@ print_help () {
 	    "-la, --loadaverage  - output of system load avarage"	
 	    "-t,  --task         - add task to cron"
 
-        "-k,  --kill         - send a signal to a processes\n"
-        "-o,  --output       - save a result on a drive"
-		"                      /tmp/system-stats-Output.txt\n"
+            "-k,  --kill         - send a signal to a processes\n"
+            "-o,  --output       - save a result on a drive"
+	    "                      /tmp/system-stats-Output.txt\n"
 
-        "-os, --outputstats  - save all stats output to a log file"
-		"                      /var/log/system-stats.log\n"
+            "-os, --outputstats  - save all stats output to a log file"
+	    "                      /var/log/system-stats.log\n"
 
-        "-h,  --help         - description of script commands and examples\n"
+            "-h,  --help         - description of script commands and examples\n"
 
-		"-==Second Parameter for Commands:==-\n"
+	    "-==Second Parameter for Commands:==-\n"
 
 		"-p cpuinfo          - detailed info about cpu"
 		"-p meminfo          - detailed info about system memory\n"
